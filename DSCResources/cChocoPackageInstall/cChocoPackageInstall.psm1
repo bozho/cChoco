@@ -501,6 +501,11 @@ function Get-ChocoInstalledPackage {
         [switch]$NoCache
     )
 
+    if ([string]::IsNullOrEmpty($env:ChocolateyInstall))
+    {
+        $env:ChocolateyInstall = [environment]::GetEnvironmentVariable('ChocolateyInstall', 'Machine')
+    }
+
     $ChocoInstallLP = Join-Path -Path $env:ChocolateyInstall -ChildPath 'cache'
     if ( -not (Test-Path $ChocoInstallLP)){
         New-Item -Name 'cache' -Path $env:ChocolateyInstall -ItemType Directory | Out-Null
@@ -532,6 +537,12 @@ function Get-ChocoVersion {
         [switch]$Purge,
         [switch]$NoCache
     )
+
+    if ([string]::IsNullOrEmpty($env:ChocolateyInstall))
+    {
+        $env:ChocolateyInstall = [environment]::GetEnvironmentVariable('ChocolateyInstall', 'Machine')
+    }
+
     $chocoInstallCache = Join-Path -Path $env:ChocolateyInstall -ChildPath 'cache'
     if ( -not (Test-Path $chocoInstallCache)){
         New-Item -Name 'cache' -Path $env:ChocolateyInstall -ItemType Directory | Out-Null
